@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "RgbLeds.h"
 
-RgbLeds::RgbLeds(uint _redPin, uint _greenPin, uint _bluePin)
+RgbLeds::RgbLeds(uint8_t _redPin, uint8_t _greenPin, uint8_t _bluePin)
   : redPin(_redPin),
     greenPin(_greenPin),
     bluePin(_bluePin) {

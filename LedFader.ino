@@ -1,4 +1,4 @@
-#include "Arduino.h"
+#include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
@@ -44,7 +44,7 @@ int brightness = 0;  // how bright the LED is
 int offset = 5;      // how many points to fade the LED by
 bool fading = false;
 long previousMillis = 0;
-int interval = 50;
+uint interval = 50;
 
 RgbLeds leds = RgbLeds(D3, D4, D5);
 
