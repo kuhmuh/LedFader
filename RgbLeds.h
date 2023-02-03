@@ -16,11 +16,14 @@ public:
 
   void init(PinModeFunction pinMode, AnalogWriteFunction analogWrite);
   String toString();
-  void updateView();
   void setLevels(int r, int g, int b);
   int getRedLevel();
   int getGreenLevel();
   int getBlueLevel();
+  void startFading();
+  void stopFading();
+  void setFadeInterval(int newInterval);
+  void handleFade(unsigned long currentMillis);
 
 private:
   AnalogWriteFunction analogWrite;
@@ -28,6 +31,14 @@ private:
   int greenLevel = 0;
   int blueLevel = 0;
 
+
+  int brightness = 0;  // how bright the LED is
+  long previousMillis = 0;
+  uint interval = 50;
+  int offset = 5;  // how many points to fade the LED by
+  bool fading = false;
+
   int trim(int value);
+  void updateView();
 };
 #endif

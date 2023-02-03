@@ -28,6 +28,7 @@ void RgbLeds::setLevels(int r, int g, int b) {
   redLevel = trim(r);
   greenLevel = trim(g);
   blueLevel = trim(b);
+  updateView();
 }
 
 int RgbLeds::trim(int value) {
@@ -46,4 +47,40 @@ int RgbLeds::getGreenLevel() {
 
 int RgbLeds::getBlueLevel() {
   return blueLevel;
+}
+
+void RgbLeds::startFading() {
+  fading = true;
+}
+
+void RgbLeds::stopFading() {
+  fading = false;
+}
+
+void RgbLeds::setFadeInterval(int newInterval) {
+  interval = newInterval;
+}
+
+void RgbLeds::handleFade(unsigned long currentMillis) {
+  if (!fading) {
+    return;
+  }
+  
+  if (currentMillis < previousMillis + interval) {
+    return;
+  }
+
+  previousMillis = currentMillis;
+
+  unsigned long nextLevel = brightness + offset;
+  if (nextLevel > 255) {
+    nextLevel = 255;
+    offset = -1 * offset;
+  }
+  if (nextLevel < 0) {
+    nextLevel = 0;
+    offset = -1 * offset;
+  }
+  setLevels(nextLevel, nextLevel, nextLevel);
+  brightness = nextLevel;
 }

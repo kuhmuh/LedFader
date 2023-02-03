@@ -40,39 +40,8 @@ const String rootTemplate = "<html>\
   </body>\
 </html>";
 
-int brightness = 0;  // how bright the LED is
-int offset = 5;      // how many points to fade the LED by
-bool fading = false;
-long previousMillis = 0;
-uint interval = 50;
 
 RgbLeds leds = RgbLeds(D3, D4, D5);
-
-void handleFade(void) {
-  if (!fading) {
-    return;
-  }
-
-  unsigned long currentMillis = millis();
-  if (currentMillis < previousMillis + interval) {
-    return;
-  }
-
-  previousMillis = currentMillis;
-
-  unsigned long nextLevel = brightness + offset;
-  if (nextLevel > 255) {
-    nextLevel = 255;
-    offset = -1 * offset;
-  }
-  if (nextLevel < 0) {
-    nextLevel = 0;
-    offset = -1 * offset;
-  }
-  leds.setLevels(nextLevel, nextLevel, nextLevel);
-  leds.updateView();
-  brightness = nextLevel;
-}
 
 void handleRoot() {
   String result = rootTemplate;
@@ -92,9 +61,8 @@ void handlePlain() {
     int newLevelG = server.arg("ratioG").toInt();
     int newLevelB = server.arg("ratioB").toInt();
     if (isValid(newLevelR)) {
-      fading = false;
+      leds.stopFading();
       leds.setLevels(newLevelR, newLevelG, newLevelG);
-      leds.updateView();
     }
   }
 }
@@ -110,11 +78,9 @@ void startFading() {
     server.sendHeader("Location", String("/"), true);
     server.send(301, "text/plain", "");
     int speed = server.arg("speed").toInt();
-    if (speed >= 10 && speed <= 1000) {
-      interval = speed;
-    }
+    leds.setFadeInterval(speed);
     DBG_OUTPUT_PORT.println("start fading");
-    fading = true;
+    leds.startFading();
   }
 }
 
@@ -162,5 +128,5 @@ void setup(void) {
 void loop(void) {
   server.handleClient();
   MDNS.update();
-  handleFade();
+  leds.handleFade(millis());
 }
