@@ -19,9 +19,11 @@ String RgbLeds::toString() {
 }
 
 void RgbLeds::updateView() {
-  this->analogWrite(redPin, redLevel);
-  this->analogWrite(greenPin, greenLevel);
-  this->analogWrite(bluePin, blueLevel);
+  if (this->analogWrite) {
+    this->analogWrite(redPin, redLevel);
+    this->analogWrite(greenPin, greenLevel);
+    this->analogWrite(bluePin, blueLevel);
+  }
 }
 
 void RgbLeds::setLevels(int r, int g, int b) {
@@ -65,22 +67,21 @@ void RgbLeds::handleFade(unsigned long currentMillis) {
   if (!fading) {
     return;
   }
-  
+
   if (currentMillis < previousMillis + interval) {
     return;
   }
 
   previousMillis = currentMillis;
 
-  unsigned long nextLevel = brightness + offset;
+  int nextLevel = redLevel + offset;
   if (nextLevel > 255) {
-    nextLevel = 255;
+    nextLevel = 255 - offset;
     offset = -1 * offset;
   }
   if (nextLevel < 0) {
-    nextLevel = 0;
+    nextLevel = 0 - offset;
     offset = -1 * offset;
   }
   setLevels(nextLevel, nextLevel, nextLevel);
-  brightness = nextLevel;
 }

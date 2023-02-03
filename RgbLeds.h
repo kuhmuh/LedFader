@@ -24,6 +24,7 @@ public:
   void stopFading();
   void setFadeInterval(int newInterval);
   void handleFade(unsigned long currentMillis);
+  void updateView();
 
 private:
   AnalogWriteFunction analogWrite;
@@ -31,14 +32,11 @@ private:
   int greenLevel = 0;
   int blueLevel = 0;
 
-
-  int brightness = 0;  // how bright the LED is
-  long previousMillis = 0;
-  uint interval = 50;
+  unsigned long previousMillis = 0;
+  uint8_t interval = 50;
   int offset = 5;  // how many points to fade the LED by
   bool fading = false;
 
   int trim(int value);
-  void updateView();
 };
 #endif
