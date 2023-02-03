@@ -27,5 +27,7 @@ private:
   int redLevel = 0;
   int greenLevel = 0;
   int blueLevel = 0;
+
+  int trim(int value);
 };
 #endif

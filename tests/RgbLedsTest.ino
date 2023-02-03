@@ -41,6 +41,26 @@ test(updateView) {
   assertEqual(3, analogWrite);
 }
 
+test(setLevels, set_correct_value) {
+  RgbLeds leds = RgbLeds(1, 2, 3);
+
+  leds.setLevels(0xff,0xfe,0xfd);
+
+  assertEqual(0xff, leds.getRedLevel());
+  assertEqual(0xfe, leds.getGreenLevel());
+  assertEqual(0xfd, leds.getBlueLevel());
+}
+
+test(setLevels, cuts_values) {
+  RgbLeds leds = RgbLeds(1, 2, 3);
+
+  leds.setLevels(256,-1,255);
+
+  assertEqual(255, leds.getRedLevel());
+  assertEqual(0, leds.getGreenLevel());
+  assertEqual(255, leds.getBlueLevel());
+}
+
 // ------------------------------------------------------
 // The main body.
 // ------------------------------------------------------

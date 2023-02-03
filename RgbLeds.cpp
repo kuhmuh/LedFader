@@ -25,9 +25,15 @@ void RgbLeds::updateView() {
 }
 
 void RgbLeds::setLevels(int r, int g, int b) {
-  redLevel = r;
-  greenLevel = g;
-  blueLevel = b;
+  redLevel = trim(r);
+  greenLevel = trim(g);
+  blueLevel = trim(b);
+}
+
+int RgbLeds::trim(int value) {
+  if (value > 255) return 255;
+  if (value < 0) return 0;
+  return value;
 }
 
 int RgbLeds::getRedLevel() {
