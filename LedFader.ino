@@ -62,7 +62,7 @@ void handlePlain() {
     int newLevelB = server.arg("ratioB").toInt();
     if (isValid(newLevelR)) {
       leds.stopFading();
-      leds.setLevels(newLevelR, newLevelG, newLevelG);
+      leds.setLevels(newLevelR, newLevelG, newLevelB);
     }
   }
 }
